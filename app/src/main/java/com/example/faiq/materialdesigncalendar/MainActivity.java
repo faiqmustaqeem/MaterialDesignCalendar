@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements OnDateSelectedLis
         setContentView(R.layout.activity_main);
 
         calendar=(MaterialCalendarView)findViewById(R.id.calendar);
-
+        calendar.setOnDateChangedListener(this);
         Calendar c=Calendar.getInstance();
         c.setTime(new Date());
         String startDateString = (c.get(Calendar.MONTH)+1)+"/"+c.getActualMinimum(Calendar.DATE)+"/"+c.get(Calendar.YEAR);
@@ -59,6 +59,26 @@ Log.e("date start",startDate.toString());
 
     @Override
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-        Toast.makeText(this,date.toString(),Toast.LENGTH_SHORT).show();
+
+
+        if(selected)
+        {
+            //Log.e("date selected",date.toString());
+            Date currentDate=new Date();
+            Calendar c1=Calendar.getInstance();
+            c1.setTime(currentDate);
+
+            Calendar c2=Calendar.getInstance();
+            date.copyTo(c2);
+         // CalendarDay calendarDay=c.getTi
+            if(c2.before(c1))
+            {
+                Toast.makeText(this,"You cant select previous date",Toast.LENGTH_SHORT).show();
+                widget.clearSelection();
+            }
+            else {
+                Toast.makeText(this, date.getDate().toString(), Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }
